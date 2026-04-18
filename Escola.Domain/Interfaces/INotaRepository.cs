@@ -7,7 +7,7 @@ namespace Escola.Domain.Interfaces
 {
     public interface INotaRepository
     {
-            Task<Nota> GetByIdAsync(Guid id);
+            Task<Nota> GetByIdAsync(int id);
             Task<List<Nota>> GetAllAsync();
             Task<Nota> AddAsync(Nota nota);
             Task<Nota> UpdateAsync(Nota nota);

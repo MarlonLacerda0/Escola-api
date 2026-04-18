@@ -1,5 +1,7 @@
 ﻿using Escola.Domain.Entities;
 using Escola.Domain.Interfaces;
+using Escola.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,29 +10,45 @@ namespace Escola.Infra.Data.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        public Task<Usuario> AddAsync(Usuario usuario)
+        private readonly ApplicationDbContext _context;
+        public UsuarioRepository(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<Usuario> AddAsync(Usuario usuario)
+        {
+            _context.Usuario.Add(usuario);
+            await _context.SaveChangesAsync();
+            return usuario;
         }
 
-        public Task<Usuario> DeleteAsync(int id)
+        public async Task<Usuario> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var usuario = _context.Usuario.Where(x => x.Excluido == false && x.Id == id).FirstOrDefault();
+            if (usuario == null)
+                return null;
+
+            usuario.Excluido = true;
+            _context.Usuario.Update(usuario);
+            await _context.SaveChangesAsync();
+            return usuario;
         }
 
-        public Task<List<Usuario>> GetAllAsync()
+        public async Task<List<Usuario>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Usuario.Where(x => x.Excluido == false).ToListAsync();
         }
 
-        public Task<Usuario> GetByIdAsync(Guid id)
+        public async Task<Usuario> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Usuario.Where(x => x.Excluido == false && x.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<Usuario> UpdateAsync(Usuario usuario)
+        public async Task<Usuario> UpdateAsync(Usuario usuario)
         {
-            throw new NotImplementedException();
+            _context.Update(usuario);
+            await _context.SaveChangesAsync();
+            return usuario;
         }
     }
 }
