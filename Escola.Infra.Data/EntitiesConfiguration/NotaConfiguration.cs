@@ -15,6 +15,7 @@ namespace Escola.Infra.Data.EntitiesConfiguration
             builder.Property(n => n.MatriculaId)
                 .IsRequired();
             builder.Property(n => n.ValorNota)
+                .HasPrecision(10,2)
                 .IsRequired();
 
             builder.HasOne(x => x.Matricula)
