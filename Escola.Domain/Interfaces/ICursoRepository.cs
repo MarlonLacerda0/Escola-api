@@ -7,7 +7,7 @@ namespace Escola.Domain.Interfaces
 {
     public interface ICursoRepository
     {
-        Task<Curso> GetByIdAsync(Guid id);
+        Task<Curso> GetByIdAsync(int id);
         Task<List<Curso>> GetAllAsync();
         Task<Curso> AddAsync(Curso curso);
         Task<Curso> UpdateAsync(Curso curso);
