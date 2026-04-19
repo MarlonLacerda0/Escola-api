@@ -31,24 +31,72 @@ namespace Escola.Application.Services
             };
         }
 
-        public Task<CursoGetDTO> DeleteAsync(int id)
+        public async Task<CursoGetDTO> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var deletedCurso = await _cursoRepository.DeleteAsync(id);
+            if (deletedCurso == null)
+            {
+                return null;
+            }
+            return new CursoGetDTO
+            {
+                Id = deletedCurso.Id,
+                Nome = deletedCurso.Nome,
+                Descricao = deletedCurso.Descricao
+            };
         }
 
-        public Task<List<CursoGetDTO>> GetAllAsync()
+        public async Task<List<CursoGetDTO>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var cursos = await _cursoRepository.GetAllAsync();
+            var cursoGetDTOs = new List<CursoGetDTO>();
+            foreach (var curso in cursos)
+            {
+                cursoGetDTOs.Add(new CursoGetDTO
+                {
+                    Id = curso.Id,
+                    Nome = curso.Nome,
+                    Descricao = curso.Descricao
+                });
+            }
+            return cursoGetDTOs;
         }
 
-        public Task<CursoGetDTO> GetByIdAsync(int id)
+        public async Task<CursoGetDTO> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var curso = await _cursoRepository.GetByIdAsync(id);
+            if (curso == null)
+            {
+                return null;
+            }
+            return new CursoGetDTO
+            {
+                Id = curso.Id,
+                Nome = curso.Nome,
+                Descricao = curso.Descricao
+            };
         }
 
-        public Task<CursoGetDTO> UpdateAsync(CursoPutDTO cursoPutDTO)
+        public async Task<CursoGetDTO> UpdateAsync(CursoPutDTO cursoPutDTO)
         {
-            throw new NotImplementedException();
+            var curso = new Curso
+            {
+                Id = cursoPutDTO.Id,
+                Nome = cursoPutDTO.Nome,
+                Descricao = cursoPutDTO.Descricao
+            };
+            var updatedCurso = await _cursoRepository.UpdateAsync(curso);
+            if (updatedCurso == null)
+            {
+                return null;
+            }
+            return new CursoGetDTO
+            {
+                Id = updatedCurso.Id,
+                Nome = updatedCurso.Nome,
+                Descricao = updatedCurso.Descricao
+            };
+
         }
     }
 }
